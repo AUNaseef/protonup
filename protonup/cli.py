@@ -12,7 +12,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(usage="%(prog)s", description="Manage Proton-GE Installations",
                                      epilog="GPLv3 - Repo : https://github.com/AUNaseef/protonup")
     parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version')
-    parser.add_argument('-l', '--list', action='store_true', help='list installed version')
+    parser.add_argument('-l', '--list', action='store_true', help='list installed versions')
     parser.add_argument('-r', '--rem', type=str, default=None, metavar='TAG',
                         help='remove existing installations')
     parser.add_argument('-o', '--output', type=str, default=None, metavar='DIR',
@@ -33,7 +33,7 @@ def main():
                    output=args.output)
     if args.rem:
         if not remove_proton(version=args.rem, yes=args.yes):
-            print('Proton-{version} not installed')
+            print(f'Proton-{args.rem} not installed')
     if args.list:
         for item in installed_versions():
             print(f"{item} - {round(folder_size(install_directory() + item)/MIB, 2)} MiB")

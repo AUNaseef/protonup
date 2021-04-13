@@ -11,7 +11,7 @@ def download(url, destination, show_progress=False):
     try:
         file = requests.get(url, stream=True)
     except OSError:
-        return False
+        return False  # Network error
 
     if show_progress:
         f_size = int(file.headers.get('content-length'))
@@ -35,7 +35,11 @@ def download(url, destination, show_progress=False):
     return True
 
 
-def get_sha512(filename):
+def sha512sum(filename):
+    """
+    Get SHA512 checksum of a file
+    Return Type: str
+    """
     sha512sum = hashlib.sha512()
     with open(filename, 'rb') as file:
         while True:
@@ -47,7 +51,10 @@ def get_sha512(filename):
 
 
 def folder_size(folder):
-    """Calculate the size of a folder"""
+    """
+    Calculate the size of a folder in bytes
+    Return Type: int
+    """
     size = 0
     for root, dirs, files in os.walk(folder, onerror=None):
         for file in files:
