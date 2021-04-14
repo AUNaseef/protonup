@@ -16,7 +16,7 @@ def fetch_data(tag):
     Content(s):
         'version', date', 'download', 'size', 'checksum'
     """
-    url = PROTONGE_URL + (f'tags/{tag}' if tag and tag == 'latest' else 'latest')
+    url = PROTONGE_URL + f'tags/{tag}' if tag else 'latest'
     data = requests.get(url).json()
     if 'tag_name' not in data:
         return None  # invalid tag
@@ -88,7 +88,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None):
 
     protondir = installdir + 'Proton-' + data['version']
     checksum_dir = protondir + '/sha512sum'
-    source_checksum = requests.get(data['checksum']).text
+    source_checksum = requests.get(data['checksum']).text if 'checksum' in data else None
     local_checksum = open(checksum_dir).read() if os.path.exists(checksum_dir) else None
 
     # Check if it already exist
