@@ -4,7 +4,7 @@ CLI program and API to automate the installation of [GloriousEggroll](https://gi
 ## Installation
  Install from Python Package Index
 ```
-pip install protonup
+pip3 install protonup
 ```
 Install from source
 ```
