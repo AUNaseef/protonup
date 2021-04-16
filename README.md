@@ -32,6 +32,13 @@ Example:
 protonup
 ```
 ---
+List available versions with `--releases`
+
+Example:
+```
+protonup --releases
+```
+---
 Install a specific version with `-t "version tag"`
 
 Example:
