@@ -1,5 +1,5 @@
 ## Introduction
-CLI program and API to automate installation of [GloriousEggroll](https://github.com/GloriousEggroll/)'s [Proton-GE](https://github.com/GloriousEggroll/proton-ge-custom)
+CLI program and API to automate the installation of [GloriousEggroll](https://github.com/GloriousEggroll/)'s [Proton-GE](https://github.com/GloriousEggroll/proton-ge-custom)
 
 ## Installation
  Install from Python Package Index
@@ -10,6 +10,11 @@ Install from source
 ```
 git clone https://github.com/AUNaseef/protonup && cd protonup
 python3 setup.py install
+```
+Install in development mode
+```
+git clone https://github.com/AUNaseef/protonup && cd protonup
+pip3 install --editable .
 ```
 
 ## Usage
