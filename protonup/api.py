@@ -31,9 +31,13 @@ def fetch_data(tag):
     return values
 
 
-def fetch_releases():
+def fetch_releases(count=100):
+    """
+    List ProtonGE releases on Github
+    Returnt Type: str[]
+    """
     tags = []
-    for release in requests.get(PROTONGE_URL).json():
+    for release in requests.get(PROTONGE_URL + "?per_page=" + str(count)).json():
         tags.append(release['tag_name'])
     return tags
 
