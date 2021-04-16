@@ -2,7 +2,7 @@
 import sys
 import argparse
 from .api import install_directory, installed_versions
-from .api import get_proton, remove_proton
+from .api import get_proton, remove_proton, fetch_releases
 from .utilities import folder_size
 from .constants import TEMP_DIR, MIB
 
@@ -20,6 +20,7 @@ def parse_arguments():
     parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory')
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
     parser.add_argument('--download', action='store_true', help='download only')
+    parser.add_argument('--releases', action='store_true', help='list avaiable versions')
     return parser.parse_args()
 
 
@@ -28,7 +29,7 @@ def main():
     args = parse_arguments()
     if args.dir:
         print(f"Install directory set to '{install_directory(args.dir)}'")
-    if args.tag or not (args.rem or args.list or args.dir):
+    if args.tag or not (args.rem or args.list or args.dir or args.releases):
         get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
                    output=args.output)
     if args.rem:
@@ -37,3 +38,6 @@ def main():
     if args.list:
         for item in installed_versions():
             print(f"{item} - {round(folder_size(install_directory() + item)/MIB, 2)} MiB")
+    if args.releases:
+        for tag in fetch_releases():
+            print (tag)

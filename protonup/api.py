@@ -16,7 +16,7 @@ def fetch_data(tag):
     Content(s):
         'version', date', 'download', 'size', 'checksum'
     """
-    url = PROTONGE_URL + (f'tags/{tag}' if tag else 'latest')
+    url = PROTONGE_URL + (f'/tags/{tag}' if tag else '/latest')
     data = requests.get(url).json()
     if 'tag_name' not in data:
         return None  # invalid tag
@@ -29,6 +29,13 @@ def fetch_data(tag):
             values['download'] = asset['browser_download_url']
             values['size'] = asset['size']
     return values
+
+
+def fetch_releases():
+    tags = []
+    for release in requests.get(PROTONGE_URL).json():
+        tags.append(release['tag_name'])
+    return tags
 
 
 def install_directory(target=None):
