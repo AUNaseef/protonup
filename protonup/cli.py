@@ -1,10 +1,9 @@
 """ProtonUp CLI"""
-import sys
 import argparse
 from .api import install_directory, installed_versions
 from .api import get_proton, remove_proton, fetch_releases
 from .utilities import folder_size
-from .constants import TEMP_DIR, MIB
+from .constants import MIB
 
 
 def parse_arguments():

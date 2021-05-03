@@ -16,7 +16,7 @@ def download(url, destination, show_progress=False):
     if show_progress:
         f_size = int(file.headers.get('content-length'))
         f_size_mib = round(f_size / MIB, 2)
-        c_count = f_size / BUFFER_SIZE
+        c_count = int(f_size / BUFFER_SIZE)
         c_current = 1
     destination = os.path.expanduser(destination)
     os.makedirs(os.path.dirname(destination), exist_ok=True)

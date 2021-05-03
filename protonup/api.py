@@ -8,7 +8,6 @@ from .utilities import download, sha512sum
 from .constants import CONFIG_FILE, PROTONGE_URL, MIB
 from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR
 
-
 def fetch_data(tag):
     """
     Fetch ProtonGE release information from github
@@ -34,7 +33,7 @@ def fetch_data(tag):
 def fetch_releases(count=100):
     """
     List ProtonGE releases on Github
-    Returnt Type: str[]
+    Return Type: str[]
     """
     tags = []
     for release in requests.get(PROTONGE_URL + "?per_page=" + str(count)).json():
