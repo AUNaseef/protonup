@@ -46,7 +46,7 @@ Example:
 protonup -t 6.5-GE-2
 ```
 ---
-By default the downloads are stored in a temporary folder. Change it with `-o "custom/downlod/directory"`
+By default the downloads are stored in a temporary folder. Change it with `-o "custom/download/directory"`
 
 Example:
 ```
