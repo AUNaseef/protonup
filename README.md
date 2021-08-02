@@ -11,9 +11,11 @@ Install from source
 git clone https://github.com/AUNaseef/protonup && cd protonup
 python3 setup.py install
 ```
-You need to add `./local/bin` to your `PATH`, to do so, insert following at the end of `~/.profile`
+If you get a `command not found` error, add the following to your `~/.profile` (if it's not already present) and run `source ~/.profile`
 ```
-export PATH="$HOME/.local/bin:$PATH"
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 ```
 
 ## Usage
