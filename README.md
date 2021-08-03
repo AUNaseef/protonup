@@ -11,7 +11,7 @@ pip3 install protonup
 Install from source
 ```
 git clone https://github.com/AUNaseef/protonup && cd protonup
-python3 setup.py install
+python3 setup.py install --user
 ```
 If you get a `command not found` error, add the following to your `~/.profile` (if it's not already present) and run `source ~/.profile`
 ```
