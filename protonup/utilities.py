@@ -28,7 +28,7 @@ def download(url, destination, show_progress=False):
             if show_progress:
                 progress = min(round((c_current / c_count) * 100, 2), 100.00)
                 downloaded = round((c_current * BUFFER_SIZE) / MIB, 2)
-                sys.stdout.write(f'\rDownloaded {progress}% - {downloaded} MiB/{f_size_mib} MiB')
+                sys.stdout.write(f'\rDownloaded {progress:.2f}% - {downloaded:.2f} MiB/{f_size_mib:.2f} MiB')
                 c_current += 1
         if show_progress:
             sys.stdout.write('\n')
