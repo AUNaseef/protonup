@@ -4,6 +4,7 @@ from .api import install_directory, installed_versions
 from .api import get_proton, remove_proton, fetch_releases
 from .utilities import folder_size
 from .constants import MIB
+from .gui import ProtonUpGUI
 
 
 def parse_arguments():
@@ -20,6 +21,7 @@ def parse_arguments():
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
     parser.add_argument('--download', action='store_true', help='download only')
     parser.add_argument('--releases', action='store_true', help='list avaiable versions')
+    parser.add_argument('--gui', action='store_true', help='show gui')
     return parser.parse_args()
 
 
@@ -28,6 +30,9 @@ def main():
     args = parse_arguments()
     if args.dir:
         print(f"Install directory set to '{install_directory(args.dir)}'")
+    if args.gui:
+        ProtonUpGUI()
+        return
     if args.tag or not (args.rem or args.list or args.dir or args.releases):
         get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
                    output=args.output)
