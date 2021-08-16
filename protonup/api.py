@@ -121,7 +121,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None):
         print(f"Ready to download Proton-{data['version']}",
               f"\nSize      : {round(data['size']/MIB, 2)} MiB",
               f"\nPublished : {data['date']}")
-        if not input("Continue? (Y/N): ") in ['y', 'Y']:
+        if not input("Continue? (Y/n): ") in ['y', 'Y', '']:
             return
 
     # Prepare Destination
@@ -163,7 +163,7 @@ def remove_proton(version=None, yes=True):
     """Uninstall existing proton installation"""
     target = install_directory() + "Proton-" + version
     if os.path.exists(target):
-        if yes or input(f'Are you sure? (Y/N) ') in ['y', 'Y']:
+        if yes or input(f'Are you sure? (Y/n) ') in ['y', 'Y', '']:
             shutil.rmtree(install_directory() + 'Proton-' + version)
         return True
     return False
