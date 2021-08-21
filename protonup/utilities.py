@@ -3,7 +3,16 @@ import os
 import sys
 import hashlib
 import requests
-from .constants import MIB, BUFFER_SIZE
+from .constants import BUFFER_SIZE
+
+
+def readable_size(num, suffix='B'):
+    """ Convert bytes to readable values """
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f %s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f %s%s" % (num, 'Yi', suffix)
 
 
 def download(url, destination, show_progress=False):
@@ -15,7 +24,7 @@ def download(url, destination, show_progress=False):
 
     if show_progress:
         f_size = int(file.headers.get('content-length'))
-        f_size_mib = round(f_size / MIB, 2)
+        f_size_r = readable_size(f_size)
         c_count = int(f_size / BUFFER_SIZE)
         c_current = 1
     destination = os.path.expanduser(destination)
@@ -26,9 +35,9 @@ def download(url, destination, show_progress=False):
                 dest.write(chunk)
                 dest.flush()
             if show_progress:
-                progress = min(round((c_current / c_count) * 100, 2), 100.00)
-                downloaded = round((c_current * BUFFER_SIZE) / MIB, 2)
-                sys.stdout.write(f'\rDownloaded {progress:.2f}% - {downloaded:.2f} MiB/{f_size_mib:.2f} MiB')
+                progress = min((c_current / c_count) * 100, 100.00)
+                downloaded = readable_size(c_current * BUFFER_SIZE)
+                sys.stdout.write(f'\rDownloaded {progress:.2f}% - {downloaded} / {f_size_r}   ')
                 c_current += 1
         if show_progress:
             sys.stdout.write('\n')

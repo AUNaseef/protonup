@@ -4,8 +4,8 @@ import shutil
 from configparser import ConfigParser
 import tarfile
 import requests
-from .utilities import download, sha512sum
-from .constants import CONFIG_FILE, PROTONGE_URL, MIB
+from .utilities import download, sha512sum, readable_size
+from .constants import CONFIG_FILE, PROTONGE_URL
 from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR
 
 
@@ -124,9 +124,9 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
     # Confirmation
     if not yes:
         print(f"Ready to download Proton-{data['version']}",
-              f"\nSize      : {round(data['size'] / MIB, 2)} MiB",
+              f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
-        if not input("Continue? (Y/n): ") in ['y', 'Y', '']:
+        if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
             return
 
     # Prepare Destination
@@ -164,7 +164,6 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
                             print('Deleting', "protonGE-" + i)
                             remove_proton(version=i[7:])
         open(checksum_dir, 'w').write(download_checksum)
-
     elif not yes:
         print('[INFO] Dowloaded to: ' + destination)
 
@@ -172,11 +171,12 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
     shutil.rmtree(TEMP_DIR, ignore_errors=True)
 
 
-def remove_proton(version=None, yes=True):
+def remove_proton(version=None):
     """Uninstall existing proton installation"""
-    target = install_directory() + "Proton-" + version
+    if not version.startswith("Proton-"):
+        version = "Proton-" + version
+    target = install_directory() + version
     if os.path.exists(target):
-        if yes or input(f'Are you sure you want to delete {"Proton-" + version}? (Y/n) ') in ['y', 'Y', '']:
-            shutil.rmtree(install_directory() + 'Proton-' + version)
+        shutil.rmtree(target)
         return True
     return False

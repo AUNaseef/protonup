@@ -2,8 +2,7 @@
 import argparse
 from .api import install_directory, installed_versions
 from .api import get_proton, remove_proton, fetch_releases
-from .utilities import folder_size
-from .constants import MIB
+from .utilities import folder_size, readable_size
 
 
 def parse_arguments():
@@ -26,17 +25,24 @@ def parse_arguments():
 def main():
     """Start here"""
     args = parse_arguments()
+
     if args.dir:
         print(f"Install directory set to '{install_directory(args.dir)}'")
+
     if args.tag or not (args.rem or args.list or args.dir or args.releases):
         get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
                    output=args.output)
     if args.rem:
-        if not remove_proton(version=args.rem, yes=args.yes):
+        if args.yes or input(f"Confirm remove {args.rem}? (Y/n): ") not in ['y', 'Y', '']:
+            return
+        if not remove_proton(version=args.rem):
             print(f'Proton-{args.rem} not installed')
+
     if args.list:
+        _install_directory = install_directory()
         for item in installed_versions():
-            print(f"{item} - {round(folder_size(install_directory() + item)/MIB, 2)} MiB")
+            print(f"{item} - {readable_size(folder_size(_install_directory + item))}")
+
     if args.releases:
         for tag in fetch_releases():
-            print (tag)
+            print(tag)
