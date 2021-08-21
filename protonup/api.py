@@ -162,7 +162,7 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
                     if input(f'Are you sure you want to delete ALL previous versions? (y/N) ') in ['Y', 'y']:
                         for i in versions_to_delete:
                             print('Deleting', "protonGE-" + i)
-                            remove_proton(version=i[7:])
+                            remove_proton(version=i)
         open(checksum_dir, 'w').write(download_checksum)
     elif not yes:
         print('[INFO] Dowloaded to: ' + destination)
