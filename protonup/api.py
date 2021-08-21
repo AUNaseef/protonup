@@ -112,10 +112,10 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
             if local_checksum in source_checksum:
                 if not yes:
                     print(f"[INFO] Proton-{data['version']} already installed")
-                    print("[INFO] No hotfix found")
+                    print("[INFO] No updates found")
                 return
             elif not yes:
-                print("[INFO] Hotfix available")
+                print("[INFO] Update available!")
         else:
             if not yes:
                 print(f"[INFO] Proton-{data['version']} already installed")
