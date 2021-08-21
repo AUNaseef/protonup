@@ -8,6 +8,7 @@ from .utilities import download, sha512sum
 from .constants import CONFIG_FILE, PROTONGE_URL, MIB
 from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR
 
+
 def fetch_data(tag):
     """
     Fetch ProtonGE release information from github
@@ -83,10 +84,14 @@ def installed_versions():
             if os.path.exists(f'{installdir}/{folder}/proton'):
                 versions_found.append(folder)
 
+    # sort reverse-alphabetically, so versions go newer first
+    versions_found.sort()
+    versions_found = list(reversed(versions_found))
+
     return versions_found
 
 
-def get_proton(version=None, yes=True, dl_only=False, output=None):
+def get_proton(version=None, yes=True, output=None, dl_only=False):
     """Download and (optionally) install Proton"""
     installdir = install_directory()
     data = fetch_data(tag=version)
@@ -119,7 +124,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None):
     # Confirmation
     if not yes:
         print(f"Ready to download Proton-{data['version']}",
-              f"\nSize      : {round(data['size']/MIB, 2)} MiB",
+              f"\nSize      : {round(data['size'] / MIB, 2)} MiB",
               f"\nPublished : {data['date']}")
         if not input("Continue? (Y/n): ") in ['y', 'Y', '']:
             return
@@ -151,7 +156,15 @@ def get_proton(version=None, yes=True, dl_only=False, output=None):
         tarfile.open(destination, "r:gz").extractall(install_directory())
         if not yes:
             print('[INFO] Installed in: ' + protondir)
+            versions_to_delete = installed_versions()[1:]
+            if versions_to_delete:
+                if input(f'Would you like to delete {len(versions_to_delete)} previous version(s) of protonGE? (y/N) ') in ['Y', 'y']:
+                    if input(f'Are you sure you want to delete ALL previous versions? (y/N) ') in ['Y', 'y']:
+                        for i in versions_to_delete:
+                            print('Deleting', "protonGE-" + i)
+                            remove_proton(version=i[7:])
         open(checksum_dir, 'w').write(download_checksum)
+
     elif not yes:
         print('[INFO] Dowloaded to: ' + destination)
 
@@ -163,7 +176,7 @@ def remove_proton(version=None, yes=True):
     """Uninstall existing proton installation"""
     target = install_directory() + "Proton-" + version
     if os.path.exists(target):
-        if yes or input(f'Are you sure? (Y/n) ') in ['y', 'Y', '']:
+        if yes or input(f'Are you sure you want to delete {"Proton-" + version}? (Y/n) ') in ['y', 'Y', '']:
             shutil.rmtree(install_directory() + 'Proton-' + version)
         return True
     return False
