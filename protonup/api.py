@@ -161,7 +161,7 @@ def get_proton(version=None, yes=True, output=None, dl_only=False):
                 if input(f'Would you like to delete {len(versions_to_delete)} previous version(s) of protonGE? (y/N) ') in ['Y', 'y']:
                     if input(f'Are you sure you want to delete ALL previous versions? (y/N) ') in ['Y', 'y']:
                         for i in versions_to_delete:
-                            print('Deleting', "protonGE-" + i)
+                            print('Deleting', i)
                             remove_proton(version=i)
         open(checksum_dir, 'w').write(download_checksum)
     elif not yes:
