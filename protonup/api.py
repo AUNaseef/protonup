@@ -9,10 +9,10 @@ from .constants import CONFIG_FILE, PROTONGE_URL
 from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR
 
 
-def fetch_data(tag):
+def fetch_data(tag) -> dict:
     """
     Fetch ProtonGE release information from github
-    Return Type: dict
+    Return Type: dict {str, str}
     Content(s):
         'version', date', 'download', 'size', 'checksum'
     """
@@ -31,10 +31,10 @@ def fetch_data(tag):
     return values
 
 
-def fetch_releases(count=100):
+def fetch_releases(count=100) -> list[str]:
     """
     List ProtonGE releases on Github
-    Return Type: str[]
+    Return Type: list[str]
     """
     tags = []
     for release in requests.get(PROTONGE_URL + "?per_page=" + str(count)).json():
@@ -42,7 +42,7 @@ def fetch_releases(count=100):
     return tags
 
 
-def install_directory(target=None):
+def install_directory(target=None) -> str:
     """
     Custom install directory
     Return Type: str
@@ -69,10 +69,10 @@ def install_directory(target=None):
     return DEFAULT_INSTALL_DIR
 
 
-def installed_versions():
+def installed_versions() -> list[str]:
     """
     List of proton installations
-    Return Type: str[]
+    Return Type: list[str]
     """
     installdir = install_directory()
     versions_found = []
@@ -80,14 +80,12 @@ def installed_versions():
     if os.path.exists(installdir):
         folders = os.listdir(installdir)
         # Find names of directories with proton
-        for folder in folders:
-            if os.path.exists(f'{installdir}/{folder}/proton'):
-                versions_found.append(folder)
+        versions_found = [folder for folder in folders if os.path.exists(installdir + '/' + folder + "/proton")]
 
     return versions_found
 
 
-def get_proton(version=None, yes=True, dl_only=False, output=None):
+def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
     """Download and (optionally) install Proton"""
     installdir = install_directory()
     data = fetch_data(tag=version)
@@ -160,7 +158,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None):
     shutil.rmtree(TEMP_DIR, ignore_errors=True)
 
 
-def remove_proton(version=None):
+def remove_proton(version=None) -> bool:
     """Uninstall existing proton installation"""
     if not version.startswith("Proton-"):
         version = "Proton-" + version
