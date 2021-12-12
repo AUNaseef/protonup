@@ -152,7 +152,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
             print('[INFO] Installed in: ' + protondir)
         open(checksum_dir, 'w').write(download_checksum)
     elif not yes:
-        print('[INFO] Dowloaded to: ' + destination)
+        print('[INFO] Downloaded to: ' + destination)
 
     # Clean up
     shutil.rmtree(TEMP_DIR, ignore_errors=True)

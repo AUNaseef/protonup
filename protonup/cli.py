@@ -18,7 +18,7 @@ def parse_arguments():
     parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory')
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
     parser.add_argument('--download', action='store_true', help='download only')
-    parser.add_argument('--releases', action='store_true', help='list avaiable versions')
+    parser.add_argument('--releases', action='store_true', help='list available versions')
     return parser.parse_args()
 
 
