@@ -31,7 +31,7 @@ def fetch_data(tag) -> dict:
     return values
 
 
-def fetch_releases(count=100) -> list[str]:
+def fetch_releases(count=100) -> list:
     """
     List ProtonGE releases on Github
     Return Type: list[str]
@@ -69,7 +69,7 @@ def install_directory(target=None) -> str:
     return DEFAULT_INSTALL_DIR
 
 
-def installed_versions() -> list[str]:
+def installed_versions() -> list:
     """
     List of proton installations
     Return Type: list[str]
