@@ -29,14 +29,14 @@ def main():
     if args.dir:
         print(f"Install directory set to '{install_directory(args.dir)}'")
 
-    if args.tag or not (args.rem or args.list or args.dir or args.releases):
+    if args.tag or not (args.remove or args.list or args.dir or args.releases):
         get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
                    output=args.output)
-    if args.rem:
-        if args.yes or input(f"Confirm remove {args.rem}? (Y/n): ") not in ['y', 'Y', '']:
+    if args.remove:
+        if args.yes or input(f"Confirm remove {args.remove}? (Y/n): ") not in ['y', 'Y', '']:
             return
-        if not remove_proton(version=args.rem):
-            print(f'Proton-{args.rem} not installed')
+        if not remove_proton(version=args.remove):
+            print(f'Proton-{args.remove} not installed')
 
     if args.list:
         _install_directory = install_directory()
