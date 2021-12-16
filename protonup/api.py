@@ -39,6 +39,7 @@ def fetch_releases(count=100) -> list:
     tags = []
     for release in requests.get(PROTONGE_URL + "?per_page=" + str(count)).json():
         tags.append(release['tag_name'])
+    tags.reverse()
     return tags
 
 
