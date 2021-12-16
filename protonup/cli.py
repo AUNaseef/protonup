@@ -11,7 +11,7 @@ def parse_arguments():
                                      epilog="GPLv3 - Repo : https://github.com/AUNaseef/protonup")
     parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version')
     parser.add_argument('-l', '--list', action='store_true', help='list installed versions')
-    parser.add_argument('-r', '--rem', type=str, default=None, metavar='TAG',
+    parser.add_argument('-r', '--remove', type=str, default=None, metavar='TAG',
                         help='remove existing installations')
     parser.add_argument('-o', '--output', type=str, default=None, metavar='DIR',
                         help='set download directory')
