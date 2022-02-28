@@ -1,5 +1,5 @@
 """ProtonUp CLI"""
-import argparse, textwrap
+import argparse
 from .api import install_directory, installed_versions
 from .api import get_proton, remove_proton, fetch_releases
 from .utilities import folder_size, readable_size
