@@ -28,6 +28,7 @@ def fetch_data(tag) -> dict:
         elif asset['name'].endswith('tar.gz'):
             values['download'] = asset['browser_download_url']
             values['size'] = asset['size']
+    
     return values
 
 
@@ -40,6 +41,7 @@ def fetch_releases(count=100) -> list:
     for release in requests.get(PROTONGE_URL + "?per_page=" + str(count)).json():
         tags.append(release['tag_name'])
     tags.reverse()
+    
     return tags
 
 
@@ -82,7 +84,8 @@ def installed_versions() -> list:
         folders = os.listdir(installdir)
         # Find names of directories with proton
         versions_found = [folder for folder in folders if os.path.exists(installdir + '/' + folder + "/proton")]
-
+    
+    # works: print('debug installed_versions:\n',versions_found)
     return versions_found
 
 
@@ -95,8 +98,13 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
         if not yes:
             print('[ERROR] invalid tag / binary not found')
         return False
-
-    protondir = installdir + 'Proton-' + data['version']
+    # fixes new naming scheme ##################
+    protondir = installdir
+    if not version or version.startswith('GE-'):
+        protondir += data['version']
+    else:
+        protondir += 'Proton-' + data['version']
+    ############################################
     checksum_dir = protondir + '/sha512sum'
     source_checksum = requests.get(data['checksum']).text if 'checksum' in data else None
     local_checksum = open(checksum_dir).read() if os.path.exists(checksum_dir) else None
@@ -106,21 +114,36 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
         if local_checksum and source_checksum:
             if local_checksum in source_checksum:
                 if not yes:
-                    print(f"[INFO] Proton-{data['version']} already installed")
+                    # fixes new naming scheme #####################################
+                    if not version or version.startswith('GE-'):
+                        print(f"[INFO] {data['version']} already installed")
+                    else:
+                        print(f"[INFO] Proton-{data['version']} already installed")
+                    ###############################################################
                     print("[INFO] No hotfix found")
                 return
             elif not yes:
                 print("[INFO] Hotfix available")
         else:
             if not yes:
-                print(f"[INFO] Proton-{data['version']} already installed")
+                # fixes new naming scheme #####################################
+                if not version or version.startswith('GE-'):
+                    print(f"[INFO] {data['version']} already installed")
+                else:
+                    print(f"[INFO] Proton-{data['version']} already installed")
+                ###############################################################
             return
 
     # Confirmation
     if not yes:
-        print(f"Ready to download Proton-{data['version']}",
-              f"\nSize      : {readable_size(data['size'])}",
+        # fixes new naming scheme ##############################
+        if not version or version.startswith('GE-'):
+            print(f"Ready to download {data['version']}")
+        else:
+            print(f"Ready to download Proton-{data['version']}")
+        print(f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
+        ########################################################
         if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
             return
 
@@ -161,8 +184,10 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
 
 def remove_proton(version=None) -> bool:
     """Uninstall existing proton installation"""
-    if not version.startswith("Proton-"):
+    # fixes new naming scheme ###################
+    if version and not version.startswith("GE-"):
         version = "Proton-" + version
+    #############################################
     target = install_directory() + version
     if os.path.exists(target):
         shutil.rmtree(target)
