@@ -68,7 +68,7 @@ def install_directory(target=None) -> str:
         config.read(CONFIG_FILE)
         if config.has_option('protonup', 'installdir'):
             return os.path.expanduser(config['protonup']['installdir'])
-
+    
     return DEFAULT_INSTALL_DIR
 
 
@@ -85,7 +85,6 @@ def installed_versions() -> list:
         # Find names of directories with proton
         versions_found = [folder for folder in folders if os.path.exists(installdir + '/' + folder + "/proton")]
     
-    # works: print('debug installed_versions:\n',versions_found)
     return versions_found
 
 
