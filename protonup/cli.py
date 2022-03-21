@@ -9,7 +9,7 @@ def parse_arguments():
     """Parse commandline arguments"""
     parser = argparse.ArgumentParser(usage="%(prog)s", description="Manage Proton-GE Installations",
                                      epilog="GPLv3 - Repo : https://github.com/AUNaseef/protonup")
-    parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version.')
+    parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version')
     parser.add_argument('-l', '--list', action='store_true', help='list installed versions')
     parser.add_argument('-r', '--remove', type=str, default=None, metavar='TAG',
                         help='remove existing installations')
