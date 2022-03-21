@@ -168,7 +168,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -
 
 def remove_proton(version=None) -> bool:
     """Uninstall existing proton installation"""
-    if not version.startswith("GE-Proton"):
+    if not version.startswith("Proton"):
         version = "Proton-" + version
     target = install_directory() + version
     if os.path.exists(target):
