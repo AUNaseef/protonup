@@ -132,7 +132,10 @@ def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -
     destination = os.path.expanduser(destination)
 
     # Download
-    if not download(url=data['download'], destination=destination, show_progress=not yes):
+    show = False
+    if yes or quiet:
+        show = True
+    if not download(url=data['download'], destination=destination, show_progress=not show):
         if not yes:
             print("[ERROR] Download failed")
         return
