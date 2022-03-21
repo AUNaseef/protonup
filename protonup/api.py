@@ -86,7 +86,10 @@ def installed_versions() -> list:
     return versions_found
 
 
-def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
+def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -> None:
+    show = False
+    if yes or quiet:
+        show = True
     """Download and (optionally) install Proton"""
     installdir = install_directory()
     data = fetch_data(tag=version)
@@ -117,12 +120,16 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
             return
 
     # Confirmation
-    if not yes:
+    if not yes and not quiet:
         print(f"Ready to download Proton-{data['version']}",
               f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
         if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
             return
+    elif quiet:
+        print(f"Ready to download Proton-{data['version']}",
+              f"\nSize      : {readable_size(data['size'])}",
+              f"\nPublished : {data['date']}")
 
     # Prepare Destination
     destination = output if output else (os.getcwd() if dl_only else TEMP_DIR)
@@ -132,8 +139,8 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
     destination = os.path.expanduser(destination)
 
     # Download
-    if not download(url=data['download'], destination=destination, show_progress=not yes):
-        if not yes:
+    if not download(url=data['download'], destination=destination, show_progress=not show):
+        if not show:
             print("[ERROR] Download failed")
         return
 
