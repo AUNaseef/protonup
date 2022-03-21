@@ -126,7 +126,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -
               f"\nPublished : {data['date']}")
         if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
             return
-    elif quiet:
+    elif yes:
         print(f"Ready to download Proton-{data['version']}",
               f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
