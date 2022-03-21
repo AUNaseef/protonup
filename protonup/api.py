@@ -86,7 +86,7 @@ def installed_versions() -> list:
     return versions_found
 
 
-def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
+def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -> None:
     """Download and (optionally) install Proton"""
     installdir = install_directory()
     data = fetch_data(tag=version)

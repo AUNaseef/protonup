@@ -17,6 +17,7 @@ def parse_arguments():
                         help='set download directory')
     parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory')
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
+    parser.add_argument('-q', '--quiet', action='store_true', help='respond yes to all prompts and show logs')
     parser.add_argument('--download', action='store_true', help='download only')
     parser.add_argument('--releases', action='store_true', help='list available versions')
     return parser.parse_args()
@@ -30,8 +31,12 @@ def main():
         print(f"Install directory set to '{install_directory(args.dir)}'")
 
     if args.tag or not (args.remove or args.list or args.dir or args.releases):
-        get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
-                   output=args.output)
+        if args.quiet:
+            get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
+                   output=args.output, quiet=args.quiet)
+        else:
+            get_proton(version=args.tag, yes=args.yes, dl_only=args.download,
+                       output=args.output, quiet=args.quiet)
     if args.remove:
         if args.yes or input(f"Confirm remove {args.remove}? (Y/n): ") not in ['y', 'Y', '']:
             return
