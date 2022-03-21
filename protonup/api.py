@@ -120,12 +120,16 @@ def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -
             return
 
     # Confirmation
-    if not show:
+    if not yes:
         print(f"Ready to download Proton-{data['version']}",
               f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
         if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
             return
+    elif quiet:
+        print(f"Ready to download Proton-{data['version']}",
+              f"\nSize      : {readable_size(data['size'])}",
+              f"\nPublished : {data['date']}")
 
     # Prepare Destination
     destination = output if output else (os.getcwd() if dl_only else TEMP_DIR)
