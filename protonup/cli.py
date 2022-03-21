@@ -12,10 +12,10 @@ def parse_arguments():
     parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version')
     parser.add_argument('-l', '--list', action='store_true', help='list installed versions')
     parser.add_argument('-r', '--remove', type=str, default=None, metavar='TAG',
-                        help='remove existing installations')
+                        help='remove existing installations\nFor example: protonup -r 7-10')
     parser.add_argument('-o', '--output', type=str, default=None, metavar='DIR',
                         help='set download directory')
-    parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory')
+    parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory\nFor example: protonup -d ~/steam/root/compatibilitytools.d/')
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
     parser.add_argument('-q', '--quiet', action='store_true', help='respond yes to all prompts and show logs')
     parser.add_argument('--download', action='store_true', help='download only')
