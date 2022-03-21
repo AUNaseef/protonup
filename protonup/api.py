@@ -120,7 +120,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None, quiet=True) -
             return
 
     # Confirmation
-    if not yes:
+    if not yes and not quiet:
         print(f"Ready to download Proton-{data['version']}",
               f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
