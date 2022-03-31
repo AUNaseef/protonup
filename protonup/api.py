@@ -1,4 +1,4 @@
-"""ProtonUp API"""
+"""ProtonUp-ng API"""
 import os
 import shutil
 from configparser import ConfigParser

@@ -1,4 +1,4 @@
-"""ProtonUp CLI"""
+"""ProtonUp-ng CLI"""
 import argparse
 from .api import install_directory, installed_versions
 from .api import get_proton, remove_proton, fetch_releases
@@ -8,7 +8,7 @@ from .utilities import folder_size, readable_size
 def parse_arguments():
     """Parse commandline arguments"""
     parser = argparse.ArgumentParser(usage="%(prog)s", description="Manage Proton-GE Installations - Note the new GE-ProtonX-Y naming scheme (https://www.patreon.com/posts/63101415)",
-                                     epilog="GPLv3 - Repo : https://github.com/AUNaseef/protonup")
+                                     epilog="GPLv3 - Repo : https://github.com/cloudishBenne/protonup-ng")
     parser.add_argument('-t', '--tag', type=str, default=None, help='install a specific version')
     parser.add_argument('-l', '--list', action='store_true', help='list installed versions')
     parser.add_argument('-r', '--remove', type=str, default=None, metavar='TAG',

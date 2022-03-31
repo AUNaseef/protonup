@@ -1,17 +1,25 @@
 ## Introduction
-CLI program and API to automate the installation and update of [GloriousEggroll](https://github.com/GloriousEggroll/)'s [Proton-GE](https://github.com/GloriousEggroll/proton-ge-custom)
+ProtonUp-ng: CLI program and API to automate the installation and update of [GloriousEggroll](https://github.com/GloriousEggroll/)'s [Proton-GE](https://github.com/GloriousEggroll/proton-ge-custom)
 
-[![Downloads](https://pepy.tech/badge/protonup)](https://pepy.tech/project/protonup)
+Note: This is a fork of AUNaseef's awesome ProtonUp. I will maintain this fork until he pulls all needed changes for the new versioning scheme of GE-Proton into his codebase.
+
+[![Downloads](https://pepy.tech/badge/protonup-ng)](https://pepy.tech/project/protonup-ng)
 
 ## Installation
 Install from Python Package Index
 ```
-pip3 install protonup
+pip3 install protonup-ng
 ```
 Install from source
 ```
-git clone https://github.com/AUNaseef/protonup && cd protonup
+git clone https://github.com/cloudishBenne/protonup-ng && cd protonup-ng
 python3 setup.py install --user
+```
+Install a snapshot of the repo
+```
+pip3 install https://github.com/cloudishBenne/protonup-ng/archive/main.zip
+# or any other branch, tag, commit
+# pip3 install https://github.com/cloudishBenne/protonup-ng/archive/[branch, tag, commit-hash].zip
 ```
 If you get a `command not found` error, add the following to your `~/.profile` (if it's not already present) and run `source ~/.profile`
 ```
@@ -21,6 +29,7 @@ fi
 ```
 
 ## Usage
+### Note: The package itself is now called protonup-ng, but usage on the terminal is still protonup to not breaking scripts.
 Set your installation directory before running the program with `-d "your/compatibilitytools.d/directory"`
 
 Example:
@@ -48,6 +57,10 @@ Example:
 ```
 protonup -t 6.5-GE-2
 ```
+or with the new naming scheme:
+```
+protonup -t GE-Proton7-10
+```
 ---
 By default the downloads are stored in a temporary folder. Change it with `-o "custom/download/directory"`
 
@@ -68,6 +81,10 @@ Remove existing installations with `-r "version tag`
 Example:
 ```
 protonup -r 6.5-GE-2
+```
+or with the new naming scheme:
+```
+protonup -r GE-Proton7-10
 ```
 ---
 Use `--download` to download  Proton-GE to the current working directory without installing it, you can override destination with `-o`
