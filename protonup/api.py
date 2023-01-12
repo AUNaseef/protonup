@@ -19,7 +19,7 @@ def fetch_data(tag) -> dict:
     url = PROTONGE_URL + (f'/tags/{tag}' if tag else '/latest')
     data = requests.get(url).json()
     if 'tag_name' not in data:
-        return None  # invalid tag
+        return {}  # invalid tag
 
     values = {'version': data['tag_name'], 'date': data['published_at'].split('T')[0]}
     for asset in data['assets']:
@@ -86,7 +86,7 @@ def installed_versions() -> list:
     return versions_found
 
 
-def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
+def get_proton(version=None, yes=True, dl_only=False, output=None) -> bool:
     """Download and (optionally) install Proton"""
     installdir = install_directory()
     data = fetch_data(tag=version)
@@ -96,7 +96,7 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
             print('[ERROR] invalid tag / binary not found')
         return False
 
-    protondir = installdir + 'Proton-' + data['version']
+    protondir = installdir + data['version']
     checksum_dir = protondir + '/sha512sum'
     source_checksum = requests.get(data['checksum']).text if 'checksum' in data else None
     local_checksum = open(checksum_dir).read() if os.path.exists(checksum_dir) else None
@@ -106,23 +106,23 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
         if local_checksum and source_checksum:
             if local_checksum in source_checksum:
                 if not yes:
-                    print(f"[INFO] Proton-{data['version']} already installed")
+                    print(f"[INFO] {data['version']} already installed")
                     print("[INFO] No hotfix found")
-                return
+                return False
             elif not yes:
                 print("[INFO] Hotfix available")
         else:
             if not yes:
-                print(f"[INFO] Proton-{data['version']} already installed")
-            return
+                print(f"[INFO] {data['version']} already installed")
+            return False
 
     # Confirmation
     if not yes:
-        print(f"Ready to download Proton-{data['version']}",
+        print(f"Ready to download {data['version']}",
               f"\nSize      : {readable_size(data['size'])}",
               f"\nPublished : {data['date']}")
         if input("Continue? (Y/n): ") not in ['y', 'Y', '']:
-            return
+            return False
 
     # Prepare Destination
     destination = output if output else (os.getcwd() if dl_only else TEMP_DIR)
@@ -135,14 +135,14 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
     if not download(url=data['download'], destination=destination, show_progress=not yes):
         if not yes:
             print("[ERROR] Download failed")
-        return
+        return True
 
     download_checksum = sha512sum(destination)
     if source_checksum and (download_checksum not in source_checksum):
         if not yes:
             print("[ERROR] Checksum verification failed")
         shutil.rmtree(TEMP_DIR, ignore_errors=True)
-        return
+        return True
 
     # Installation
     if not dl_only:
@@ -158,12 +158,12 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> None:
     # Clean up
     shutil.rmtree(TEMP_DIR, ignore_errors=True)
 
+    return True
+
 
 def remove_proton(version=None) -> bool:
     """Uninstall existing proton installation"""
-    if not version.startswith("Proton-"):
-        version = "Proton-" + version
-    target = install_directory() + version
+    target = install_directory() + str(version)
     if os.path.exists(target):
         shutil.rmtree(target)
         return True
