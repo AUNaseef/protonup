@@ -1,6 +1,6 @@
 """ProtonUp CLI"""
 import argparse
-from .api import install_directory, installed_versions
+from .api import install_directory, installed_versions, available_install_directories
 from .api import get_proton, remove_proton, fetch_releases
 from .utilities import folder_size, readable_size
 
@@ -16,6 +16,7 @@ def parse_arguments():
     parser.add_argument('-o', '--output', type=str, default=None, metavar='DIR',
                         help='set download directory')
     parser.add_argument('-d', '--dir', type=str, default=None, help='set installation directory')
+    parser.add_argument('--dirs', action='store_true', help='list available install directories')
     parser.add_argument('-y', '--yes', action='store_true', help='disable prompts and logs')
     parser.add_argument('--download', action='store_true', help='download only')
     parser.add_argument('--releases', action='store_true', help='list available versions')
@@ -42,6 +43,10 @@ def main():
         _install_directory = install_directory()
         for item in installed_versions():
             print(f"{item} - {readable_size(folder_size(_install_directory + item))}")
+
+    if args.dirs:
+        for item in available_install_directories():
+            print(item)
 
     if args.releases:
         for tag in fetch_releases():

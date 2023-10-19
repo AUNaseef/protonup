@@ -6,7 +6,7 @@ import tarfile
 import requests
 from .utilities import download, sha512sum, readable_size
 from .constants import CONFIG_FILE, PROTONGE_URL
-from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR
+from .constants import TEMP_DIR, DEFAULT_INSTALL_DIR, POSSIBLE_INSTALL_LOCATIONS
 
 
 def fetch_data(tag) -> dict:
@@ -43,7 +43,21 @@ def fetch_releases(count=100) -> list:
     return tags
 
 
+def available_install_directories():
+    """
+    List available install directories
+    Return Type: str[]
+    """
+    available_dirs = []
+    for loc in POSSIBLE_INSTALL_LOCATIONS:
+        install_dir = os.path.expanduser(loc['install_dir'])
+        if os.path.exists(install_dir):
+            available_dirs.append(install_dir)
+    return available_dirs
+
+
 def install_directory(target=None) -> str:
+
     """
     Custom install directory
     Return Type: str
