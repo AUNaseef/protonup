@@ -97,6 +97,10 @@ def installed_versions() -> list:
         # Find names of directories with proton
         versions_found = [folder for folder in folders if os.path.exists(installdir + '/' + folder + "/proton")]
 
+    # sort reverse-alphabetically, so versions go newer first
+    versions_found.sort()
+    versions_found = list(reversed(versions_found))
+
     return versions_found
 
 
@@ -165,6 +169,13 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> bool:
         tarfile.open(destination, "r:gz").extractall(install_directory())
         if not yes:
             print('[INFO] Installed in: ' + protondir)
+            versions_to_delete = installed_versions()[1:]
+            if versions_to_delete:
+                if input(f'Would you like to delete {len(versions_to_delete)} previous version(s) of protonGE? (y/N) ') in ['Y', 'y']:
+                    if input(f'Are you sure you want to delete ALL previous versions? (y/N) ') in ['Y', 'y']:
+                        for i in versions_to_delete:
+                            print('Deleting', i)
+                            remove_proton(version=i)
         open(checksum_dir, 'w').write(download_checksum)
     elif not yes:
         print('[INFO] Downloaded to: ' + destination)
