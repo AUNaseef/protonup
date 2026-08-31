@@ -1,5 +1,6 @@
 """ProtonUp API"""
 import os
+import platform
 import shutil
 from configparser import ConfigParser
 import tarfile
@@ -22,7 +23,12 @@ def fetch_data(tag) -> dict:
         return {}  # invalid tag
 
     values = {'version': data['tag_name'], 'date': data['published_at'].split('T')[0]}
-    for asset in data['assets']:
+    arch = platform.machine()  # e.g. 'x86_64', 'aarch64'
+    # Filter assets matching the current architecture; fall back to all assets
+    # if no arch-specific assets exist (older releases).
+    arch_assets = [a for a in data['assets'] if arch in a['name']]
+    assets = arch_assets if arch_assets else data['assets']
+    for asset in assets:
         if asset['name'].endswith('sha512sum'):
             values['checksum'] = asset['browser_download_url']
         elif asset['name'].endswith('tar.gz'):
@@ -162,7 +168,17 @@ def get_proton(version=None, yes=True, dl_only=False, output=None) -> bool:
     if not dl_only:
         if os.path.exists(protondir):
             shutil.rmtree(protondir)
-        tarfile.open(destination, "r:gz").extractall(install_directory())
+        tar = tarfile.open(destination, "r:gz")
+        tar.extractall(install_directory())
+        # The tarball may extract to a directory that differs from the tag
+        # name (e.g. 'GE-Proton11-5-x86_64' vs 'GE-Proton11-5'), so rename
+        # it to match the expected version directory.
+        extracted = tar.getnames()[0].split('/')[0]
+        tar.close()
+        if extracted != data['version']:
+            extracted_path = os.path.join(install_directory(), extracted)
+            if os.path.exists(extracted_path):
+                os.rename(extracted_path, protondir)
         if not yes:
             print('[INFO] Installed in: ' + protondir)
         open(checksum_dir, 'w').write(download_checksum)
